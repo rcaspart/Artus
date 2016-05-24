@@ -27,9 +27,22 @@ class AverageHistograms(analysisbase.AnalysisBase):
 		self.average_options.add_argument("--average-result-nick", nargs="+",
 				help="Nick name of the resulting average histogram")
 		self.average_options.add_argument("--averaging-method", default="maxdiff",
-				help="Combination method. Available: minmax, average")
+				help="Combination method. Available: minmax, average, maxdiff, rms")
 		
-	
+	@staticmethod
+	def rms(ivec):
+		result = 0
+		for entry in ivec:
+			result += entry * entry
+		result /= len(ivec)
+		result = math.sqrt(result)
+		return result
+
+	@staticmethod
+	def mse(ivec):
+		rms = AverageHistograms.rms(ivec)
+		return AverageHistograms.rms([ (value - rms) for value in ivec])
+
 	def run(self, plotData=None):
 		super(AverageHistograms, self).run(plotData)
 		# create output histogram
@@ -38,16 +51,16 @@ class AverageHistograms(analysisbase.AnalysisBase):
 		pprint.pprint(plotData.plotdict["root_objects"])
 		result_histogram = plotData.plotdict["root_objects"][plotData.plotdict["to_average_nicks"][0]].Clone(plotData.plotdict["average_result_nick"])
 		for n_bin in xrange(1, result_histogram.GetNbinsX()+1): 
-			print "bin n " + str(n_bin)
 			for histogram in plotData.plotdict["to_average_nicks"]:
 				values.append(plotData.plotdict["root_objects"][histogram].GetBinContent(n_bin))
-			print values
 			if(plotData.plotdict["averaging_method"] == "minmax"):
 				result_histogram.SetBinContent(n_bin, (max(values) + min(values)) / 2)
-			if(plotData.plotdict["averaging_method"] == "average"):
+			elif(plotData.plotdict["averaging_method"] == "average"):
 				result_histogram.SetBinContent(n_bin, sum(values) / len(values))
-			if(plotData.plotdict["averaging_method"] == "maxdiff"):
+			elif(plotData.plotdict["averaging_method"] == "maxdiff"):
 				result_histogram.SetBinContent(n_bin, (max(values) - min(values)) / 2)
+			elif(plotData.plotdict["averaging_method"] == "rms"):
+				result_histogram.SetBinContent(n_bin, self.mse(values))
 			values = []
 		plotData.plotdict["root_objects"][plotData.plotdict["average_result_nick"]] = result_histogram
 		plotData.plotdict["nicks"].append(plotData.plotdict["average_result_nick"])
