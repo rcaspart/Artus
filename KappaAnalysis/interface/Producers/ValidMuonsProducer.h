@@ -231,6 +231,8 @@ public:
 		for (std::vector<KMuon*>::iterator muon = muons.begin(); muon != muons.end(); ++muon)
 		{
 			bool validMuon = true;
+			float muonShift = settings.GetMuonMomentumShift();
+			(*muon)->p4.SetPxPyPzE((*muon)->p4.Px()*muonShift,(*muon)->p4.Py()*muonShift,(*muon)->p4.Pz()*muonShift,(*muon)->p4.E());
 
 			// Muon ID according to Muon POG definitions
 			if (muonID == MuonID::TIGHT) {

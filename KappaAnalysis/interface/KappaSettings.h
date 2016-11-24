@@ -353,4 +353,7 @@ public:
 	// Needed by SampleStitchingWeightProducer
 	IMPL_SETTING_STRINGLIST(StitchingWeights);
 	IMPL_SETTING_STRINGLIST_DEFAULT(StitchingWeightsHighMass, {});
+
+	IMPL_SETTING_DEFAULT(float, MuonMomentumShift, 1.0);
+	IMPL_SETTING_DEFAULT(float, ElectronMomentumShift, 0.0);
 };

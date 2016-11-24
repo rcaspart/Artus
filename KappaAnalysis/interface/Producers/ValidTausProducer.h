@@ -213,11 +213,10 @@ private:
 
 	bool IsTauIDRecommendation13TeV(KTau* tau, KappaEvent const& event, bool const& oldTauDMs) const
 	{
-		const KVertex* vertex = new KVertex(event.m_vertexSummary->pv);
 		float decayModeDiscriminator = (oldTauDMs ? tau->getDiscriminator("decayModeFinding", event.m_tauMetadata)
 							  : tau->getDiscriminator("decayModeFindingNewDMs", event.m_tauMetadata));
 		return ( decayModeDiscriminator > 0.5
-			 && (std::abs(tau->track.ref.z() - vertex->position.z()) < 0.2)
+			 && (std::abs(tau->dz) < 0.2)
 			// tau dZ requirement for Phys14 sync
 			//&& (Utility::ApproxEqual(tau->track.ref.z(), vertex->position.z()))
 		);

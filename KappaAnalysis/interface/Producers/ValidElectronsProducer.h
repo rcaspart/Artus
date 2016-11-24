@@ -221,6 +221,20 @@ public:
 		for (std::vector<KElectron*>::iterator electron = electrons.begin(); electron != electrons.end(); ++electron)
 		{
 			bool valid = true;
+			int electronShiftType = settings.GetElectronMomentumShift();
+			float electronShift = 1.0;
+			if (electronShiftType>0)
+            {
+                if ((*electron)->p4.Eta() > DefaultValues::EtaBorderEB) electronShift = 1.025;
+                else electronShift = 1.01;
+            }
+			else if (electronShiftType<0)
+            {
+                if ((*electron)->p4.Eta() > DefaultValues::EtaBorderEB) electronShift = 0.975;
+                else electronShift = 0.99;
+            }
+			
+			(*electron)->p4.SetPxPyPzE((*electron)->p4.Px()*electronShift,(*electron)->p4.Py()*electronShift,(*electron)->p4.Pz()*electronShift,(*electron)->p4.E());
 
 			// POG recommondations
 			// https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentification#Non_triggering_MVA

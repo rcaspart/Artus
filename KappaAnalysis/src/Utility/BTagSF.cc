@@ -20,12 +20,12 @@ BTagSF::BTagSF(std::string csvfile, std::string efficiencyfile, std::string btag
 	{
 		reader_mujets = new BTagCalibrationReader(calib,				// calibration instance
 							BTagEntry::OP_MEDIUM, // operating point
-							"mujets",			  // measurement type
+							"comb",			  // measurement type
 							"central"			  // systematics type
 							);
 		
-		reader_mujets_up = new BTagCalibrationReader(calib, BTagEntry::OP_MEDIUM, "mujets", "up");	  // sys up
-		reader_mujets_do = new BTagCalibrationReader(calib, BTagEntry::OP_MEDIUM, "mujets", "down");  // sys down
+		reader_mujets_up = new BTagCalibrationReader(calib, BTagEntry::OP_MEDIUM, "comb", "up");	  // sys up
+		reader_mujets_do = new BTagCalibrationReader(calib, BTagEntry::OP_MEDIUM, "comb", "down");  // sys down
 		
 		reader_incl = new BTagCalibrationReader(calib,				  // calibration instance
 							BTagEntry::OP_MEDIUM, // operating point
@@ -40,12 +40,12 @@ BTagSF::BTagSF(std::string csvfile, std::string efficiencyfile, std::string btag
 	{
 		reader_mujets = new BTagCalibrationReader(calib,				// calibration instance
 							BTagEntry::OP_LOOSE, // operating point
-							"mujets",			  // measurement type
+							"comb",			  // measurement type
 							"central"			  // systematics type
 							);
 		
-		reader_mujets_up = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "mujets", "up");	 // sys up
-		reader_mujets_do = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "mujets", "down");  // sys down
+		reader_mujets_up = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "comb", "up");	 // sys up
+		reader_mujets_do = new BTagCalibrationReader(calib, BTagEntry::OP_LOOSE, "comb", "down");  // sys down
 		
 		reader_incl = new BTagCalibrationReader(calib,				  // calibration instance
 							BTagEntry::OP_LOOSE, // operating point
@@ -60,12 +60,12 @@ BTagSF::BTagSF(std::string csvfile, std::string efficiencyfile, std::string btag
 	{
 		reader_mujets = new BTagCalibrationReader(calib,				// calibration instance
 							BTagEntry::OP_TIGHT, // operating point
-							"mujets",			  // measurement type
+							"comb",			  // measurement type
 							"central"			  // systematics type
 							);
 		
-		reader_mujets_up = new BTagCalibrationReader(calib, BTagEntry::OP_TIGHT, "mujets", "up");	 // sys up
-		reader_mujets_do = new BTagCalibrationReader(calib, BTagEntry::OP_TIGHT, "mujets", "down");  // sys down
+		reader_mujets_up = new BTagCalibrationReader(calib, BTagEntry::OP_TIGHT, "comb", "up");	 // sys up
+		reader_mujets_do = new BTagCalibrationReader(calib, BTagEntry::OP_TIGHT, "comb", "down");  // sys down
 		
 		reader_incl = new BTagCalibrationReader(calib,				  // calibration instance
 							BTagEntry::OP_TIGHT, // operating point
@@ -105,7 +105,7 @@ bool BTagSF::isbtagged(double pt, float eta, float csv, Int_t jetflavor,
 	double randval = randm->Uniform();
 	
 	float csv_WP = 0.679;
-	if(year == 2015)
+	if(year == 2015 || year == 2016)
 		csv_WP = btagWP;
 
 	bool btagged = false;
@@ -135,7 +135,7 @@ bool BTagSF::isbtagged(double pt, float eta, float csv, Int_t jetflavor,
 	}
 	else
 	{
-		if (year == 2015)
+		if (year == 2015||year == 2016)
 		{
 			eff = getEfficiencyFromFile(jetflavor, pt, eta);
 		}
@@ -173,7 +173,7 @@ bool BTagSF::isbtagged(double pt, float eta, float csv, Int_t jetflavor,
 
 double BTagSF::getSFb(double pt, float eta, unsigned int btagsys, int year)
 {
-  if(year == 2015){
+  if(year == 2015 || year == 2016){
 	
 	float MaxBJetPt = 670.;
 	float MinBJetPt = 30.;
@@ -292,7 +292,7 @@ double BTagSF::getSFb(double pt, float eta, unsigned int btagsys, int year)
 
 double BTagSF::getSFc(double pt, float eta, unsigned int btagsys, int year)
 {
-  if(year == 2015){
+  if(year == 2015 || year == 2016){
 	
 	float MaxBJetPt = 670.;
 	float MinBJetPt = 30.;
@@ -403,7 +403,7 @@ double BTagSF::getSFc(double pt, float eta, unsigned int btagsys, int year)
 
 double BTagSF::getSFl(double pt, float eta, unsigned int mistagsys, int year)
 {
-  if(year == 2015){
+  if(year == 2015 || year == 2016){
 	
 	float MaxLJetPt = 1000.;
 	bool DoubleUncertainty = false;
